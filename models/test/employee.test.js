@@ -8,19 +8,28 @@ describe('Employee', () => {
         const emp = new Employee({}); // create new Employee, but don't set `name` attr value
 
         emp.validateSync(err => {
-            expect(err.errors.name).to.exist;
+            expect(err).to.exist;
+            expect(err.errors.firstName).to.exist;
+            expect(err.errors.lastName).to.exist;
+            expect(err.errors.department).to.exist;
         });
     });
 
 
     it('should throw an error if "firstName, lastName, department" is not a string', () => {
 
-        const cases = [[], {}];
+        const cases = [
+            { firstName: [], lastName: [], department: [] },
+            { firstName: {}, lastName: {}, department: {} }
+        ];
         for (let name of cases) {
             const emp = new Employee({ name });
 
             emp.validateSync(err => {
-                expect(err.errors.name).to.exist;
+                expect(err).to.exist;
+                expect(err.errors.firstName).to.exist;
+                expect(err.errors.lastName).to.exist;
+                expect(err.errors.department).to.exist;
             });
         }
     });
