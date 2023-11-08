@@ -32,12 +32,12 @@ if (!mongoose.connection) mongoose.connect(dbUri, { useNewUrlParser: true, useUn
 const db = mongoose.connection;
 
 db.once('open', () => {
-  console.log('Connected to the database');
+  //console.log('Connected to the database');
 });
 db.on('error', err => console.log('Error ' + err));
 
 const server = app.listen('8000', () => {
-  console.log('Server is running on port: 8000');
+  //console.log('Server is running on port: 8000');
 });
 
 module.exports = server;

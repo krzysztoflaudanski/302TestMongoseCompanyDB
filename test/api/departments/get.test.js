@@ -17,6 +17,8 @@ describe('GET /api/departments', () => {
         const testDepTwo = new Department({ _id: '5d9f1159f81ce8d1ef2bee48', name: 'Department #2' });
         await testDepTwo.save();
 
+    });
+
         it('/ should return all departments', async () => {
 
             const res = await request(server).get('/api/departments');
@@ -43,7 +45,5 @@ describe('GET /api/departments', () => {
         after(async () => {
             await Department.deleteMany();
         });
-
-    });
 
 });
