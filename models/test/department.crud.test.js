@@ -1,6 +1,7 @@
 const Department = require('../department.model');
 const expect = require('chai').expect;
 const mongoose = require('mongoose');
+const server = require('../../server.js');
 
 describe('Department', () => {
 
