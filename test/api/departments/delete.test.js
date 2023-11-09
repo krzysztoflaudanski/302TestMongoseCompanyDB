@@ -40,5 +40,3 @@ describe('DELETE /api/departments', () => {
     });
 
 });
-
-'Cast to ObjectId failed for value "invalidObjectId" (type string) at path "_id" for model "Department"'
