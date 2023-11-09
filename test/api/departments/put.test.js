@@ -25,7 +25,7 @@ describe('PUT /api/departments', () => {
     });
 
     after(async () => {
-        await Department.deleteOne();
+        await Department.deleteMany();
     });
 
 });
