@@ -16,9 +16,17 @@ app.use('/api', employeesRoutes);
 app.use('/api', departmentsRoutes);
 app.use('/api', productsRoutes);
 
-app.use((req, res) => {
-  res.status(404).send({ message: 'Not found...' });
-})
+app.use((err, req, res, next) => {
+  if (err) {
+    console.error(err.stack);
+    res.status(500).send({
+      message: 'Internal Server Error',
+      error: err.message || 'Something went wrong on the server side.'
+    });
+  } else {
+    res.status(404).send({ message: 'Not found...' });
+  }
+});
 
 
 
