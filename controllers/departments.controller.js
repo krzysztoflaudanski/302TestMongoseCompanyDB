@@ -74,6 +74,7 @@ exports.put = async (req, res) => {
 
 exports.delete = async (req, res) => {
   try {
+    
     const deletedDepartment = await Department.findById(req.params.id);
     if (deletedDepartment) {
       await Department.deleteOne({ _id: req.params.id });
