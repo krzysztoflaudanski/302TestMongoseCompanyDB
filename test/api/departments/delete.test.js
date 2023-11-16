@@ -4,6 +4,7 @@ const server = require('../../../server.js');
 const Department = require('../../../models/department.model');
 const { ObjectId } = require('mongodb');
 const mongoose = require('mongoose');
+const { v4: uuidv4 } = require('uuid');
 
 
 chai.use(chaiHttp);
@@ -18,19 +19,23 @@ describe('DELETE /api/departments', () => {
         await testDepOne.save();
         console.log(testDepOne)
     });
-  
-    it('/:id should return 501 if id is not an object', async () => {
-        if (mongoose.Types.ObjectId.isValid('5d9f1140f10a81216cfd4408')) {
-            console.log('To jest poprawne ObjectId.');
-          } else {
-            console.log('To nie jest poprawne ObjectId.');
-          }
-    });
 
     it('/:id should update chosen document and return success', async () => {
         const res = await request(server).delete('/api/departments/5d9f1140f10a81216cfd4408');
         expect(res.status).to.be.equal(200);
         expect(res.body).to.not.be.null;
+    });
+
+    it('/:id should return 501 if id is not an object', async () => {
+
+        const res = await request(server).delete('/api/departments/5d9f1140f10a81216cfd4408');
+        if (mongoose.Types.ObjectId.isValid('5d9f1140f10a81216cfd4408')) {
+            console.log('To jest poprawne ObjectId.');
+        } else {
+            expect(res.status).to.be.equal(501)
+            console.log('To nie jest poprawne ObjectId.');
+            expect(res.body).to.have.property('message').that.includes('Invalid UUID');
+        }
     });
 
     it('/:id should return 404 if the department is not found', async () => {

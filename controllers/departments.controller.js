@@ -1,4 +1,7 @@
 const Department = require('../models/department.model');
+const { v4: isUUID } = require('uuid');
+const { ObjectId } = require('mongodb');
+const mongoose = require('mongoose');
 
 exports.getAll = async (req, res) => {
   try {
@@ -73,9 +76,13 @@ exports.put = async (req, res) => {
 };
 
 exports.delete = async (req, res) => {
-  try {
+  const deletedDepartment = await Department.findById(req.params.id);
+  const id = req.params.id;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    res.status(501).json({ message: 'Invalid UUID' });
+  } else {
     
-    const deletedDepartment = await Department.findById(req.params.id);
     if (deletedDepartment) {
       await Department.deleteOne({ _id: req.params.id });
       res.json(deletedDepartment);
@@ -83,7 +90,5 @@ exports.delete = async (req, res) => {
     } else {
       res.status(404).json({ message: 'Not found...' });
     }
-  } catch (err) {
-    res.status(500).json({ message: err });
   }
 };

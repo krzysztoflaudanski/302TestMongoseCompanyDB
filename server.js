@@ -28,8 +28,6 @@ app.use((err, req, res, next) => {
   }
 });
 
-
-
 // connects our backend code with the database
 const NODE_ENV = process.env.NODE_ENV;
 let dbUri = '';
