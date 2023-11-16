@@ -20,22 +20,22 @@ describe('DELETE /api/departments', () => {
         console.log(testDepOne)
     });
 
-    it('/:id should update chosen document and return success', async () => {
-        const res = await request(server).delete('/api/departments/5d9f1140f10a81216cfd4408');
-        expect(res.status).to.be.equal(200);
-        expect(res.body).to.not.be.null;
-    });
-
     it('/:id should return 501 if id is not an object', async () => {
 
-        const res = await request(server).delete('/api/departments/5d9f1140f10a81216cfd4408');
-        if (mongoose.Types.ObjectId.isValid('5d9f1140f10a81216cfd4408')) {
+        const res = await request(server).delete('/api/departments/fooBar');
+        if (mongoose.Types.ObjectId.isValid('fooBar')) {
             console.log('To jest poprawne ObjectId.');
         } else {
             expect(res.status).to.be.equal(501)
             console.log('To nie jest poprawne ObjectId.');
             expect(res.body).to.have.property('message').that.includes('Invalid UUID');
         }
+    });
+
+    it('/:id should update chosen document and return success', async () => {
+        const res = await request(server).delete('/api/departments/5d9f1140f10a81216cfd4408');
+        expect(res.status).to.be.equal(200);
+        expect(res.body).to.not.be.null;
     });
 
     it('/:id should return 404 if the department is not found', async () => {

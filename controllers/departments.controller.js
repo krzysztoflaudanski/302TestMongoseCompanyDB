@@ -76,13 +76,13 @@ exports.put = async (req, res) => {
 };
 
 exports.delete = async (req, res) => {
-  const deletedDepartment = await Department.findById(req.params.id);
+  
   const id = req.params.id;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     res.status(501).json({ message: 'Invalid UUID' });
   } else {
-    
+    const deletedDepartment = await Department.findById(req.params.id);
     if (deletedDepartment) {
       await Department.deleteOne({ _id: req.params.id });
       res.json(deletedDepartment);
