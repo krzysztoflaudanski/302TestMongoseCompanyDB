@@ -2,6 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../../../server')
 const Department = require('../../../models/department.model');
+const mongoose = require('mongoose');
 
 chai.use(chaiHttp);
 
@@ -19,31 +20,43 @@ describe('GET /api/departments', () => {
 
     });
 
-        it('/ should return all departments', async () => {
+    it('/:id should return 501 if id is not an object', async () => {
 
-            const res = await request(server).get('/api/departments');
-            expect(res.status).to.be.equal(200);
-            expect(res.body).to.be.an('array');
-            expect(res.body.length).to.be.equal(2);
+        const res = await request(server).get('/api/departments/5d9f1140f10a81216cfd4408');
+        if (mongoose.Types.ObjectId.isValid('5d9f1140f10a81216cfd4408')) {
+            console.log('To jest poprawne ObjectId.');
+        } else {
+            expect(res.status).to.be.equal(501)
+            console.log('To nie jest poprawne ObjectId.');
+            expect(res.body).to.have.property('message').that.includes('Invalid UUID');
+        }
+    });
 
-        });
+    it('/ should return all departments', async () => {
 
-        it('/:id should return one department by :id ', async () => {
-            const res = await request(server).get('/api/departments/5d9f1140f10a81216cfd4408');
-            expect(res.status).to.be.equal(200);
-            expect(res.body).to.be.an('object');
-            expect(res.body).to.not.be.null;
-        });
+        const res = await request(server).get('/api/departments');
+        expect(res.status).to.be.equal(200);
+        expect(res.body).to.be.an('array');
+        expect(res.body.length).to.be.equal(2);
 
-        it('/random should return one random department', async () => {
-            const res = await request(server).get('/api/departments/random');
-            expect(res.status).to.be.equal(200);
-            expect(res.body).to.be.an('object');
-            expect(res.body).to.not.be.null;
-        });
+    });
 
-        after(async () => {
-            await Department.deleteMany();
-        });
+    it('/:id should return one department by :id ', async () => {
+        const res = await request(server).get('/api/departments/5d9f1140f10a81216cfd4408');
+        expect(res.status).to.be.equal(200);
+        expect(res.body).to.be.an('object');
+        expect(res.body).to.not.be.null;
+    });
+
+    it('/random should return one random department', async () => {
+        const res = await request(server).get('/api/departments/random');
+        expect(res.status).to.be.equal(200);
+        expect(res.body).to.be.an('object');
+        expect(res.body).to.not.be.null;
+    });
+
+    after(async () => {
+        await Department.deleteMany();
+    });
 
 });

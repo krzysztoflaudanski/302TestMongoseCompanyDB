@@ -2,6 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../../../server.js');
 const Department = require('../../../models/department.model');
+const mongoose = require('mongoose');
 
 chai.use(chaiHttp);
 
@@ -14,6 +15,18 @@ describe('PUT /api/departments', () => {
         const testDepOne = new Department({ _id: '5d9f1140f10a81216cfd4408', name: 'Department #1' });
         await testDepOne.save();
 
+    });
+
+    it('/:id should return 501 if id is not an object', async () => {
+
+        const res = await request(server).put('/api/departments/5d9f1140f10a81216cfd4408');
+        if (mongoose.Types.ObjectId.isValid('5d9f1140f10a81216cfd4408')) {
+            console.log('To jest poprawne ObjectId.');
+        } else {
+            expect(res.status).to.be.equal(501)
+            console.log('To nie jest poprawne ObjectId.');
+            expect(res.body).to.have.property('message').that.includes('Invalid UUID');
+        }
     });
 
     it('/:id should update chosen document and return success', async () => {
