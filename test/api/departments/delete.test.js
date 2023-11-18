@@ -2,10 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../../../server.js');
 const Department = require('../../../models/department.model');
-const { ObjectId } = require('mongodb');
 const mongoose = require('mongoose');
-const { v4: uuidv4 } = require('uuid');
-
 
 chai.use(chaiHttp);
 
